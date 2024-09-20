@@ -53,7 +53,7 @@ export const UserTable = () => {
 
   return (
     <>
-      <div className="overflow-x-auto h-screen flex flex-col justify-center items-center">
+      <div className="overflow-x-auto flex flex-col justify-center items-center">
         <table className="bg-gray-800 border border-gray-700">
           <thead>
             <tr className="bg-gray-900">

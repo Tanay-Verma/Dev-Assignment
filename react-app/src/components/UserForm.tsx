@@ -43,7 +43,7 @@ const UserForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 h-screen flex justify-center items-center">
+    <div className="max-w-md mx-auto flex justify-center items-center">
       <form
         onSubmit={handleSubmit}
         className="space-y-4 bg-gray-900 p-10 rounded-lg"

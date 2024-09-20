@@ -1,33 +1,36 @@
-import { useState } from "react";
-import UserForm from "./components/UserForm";
-import { UserTable } from "./components/UserTable";
-
-type pages = "home" | "user";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 export default function App() {
-  const [page, setPage] = useState<pages>("home");
+  let location = useLocation();
   return (
     <>
       <div className="w-full flex justify-center gap-32">
-        <span
-          onClick={() => setPage("home")}
-          className={`cursor-pointer p-10 mt-1 rounded-lg ${
-            page === "home" ? "bg-gray-900 text-gray-300" : "border border-gray-500"
-          }`}
-        >
-          Home
-        </span>
-        <span
-          onClick={() => setPage("user")}
-          className={`cursor-pointer p-10 mt-1 rounded-lg ${
-            page === "user" ? "bg-gray-900 text-gray-300" : "border border-gray-500"
-          }`}
-        >
-          User
-        </span>
+        <Link to={"/home"} className="block">
+          <div
+            className={`cursor-pointer p-10 mt-1 rounded-lg ${
+              location.pathname === "/home"
+                ? "bg-gray-900 text-gray-300"
+                : "border border-gray-500"
+            }`}
+          >
+            Home
+          </div>
+        </Link>
+        <Link to={"/users"} className="block">
+          <div
+            className={`cursor-pointer p-10 mt-1 rounded-lg ${
+              location.pathname === "/users"
+                ? "bg-gray-900 text-gray-300"
+                : "border border-gray-500"
+            }`}
+          >
+            User
+          </div>
+        </Link>
       </div>
-      {page === "user" && <UserTable />}
-      {page === "home" && <UserForm />}
+      <section className="p-6">
+        <Outlet />
+      </section>
     </>
   );
 }
