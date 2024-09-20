@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 
-interface User {
+export interface User {
   name: string;
-  age: number;
+  age?: number;
   email: string;
 }
 
