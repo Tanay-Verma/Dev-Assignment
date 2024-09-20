@@ -32,6 +32,10 @@ export const UserTable = () => {
     return <>Loading...</>;
   }
 
+  if (error) {
+    return <>Error: {error}</>;
+  }
+
   return (
     <>
       <div className="overflow-x-auto h-screen flex justify-center items-center">
