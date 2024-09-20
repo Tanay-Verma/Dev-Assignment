@@ -1,10 +1,11 @@
 import express from "express";
-import cors from "cors"
+import cors from "cors";
+import { v4 as uuid4 } from "uuid";
 const app = express();
 const port = 3000;
 
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 
 // In-memory storage for blog posts (replace with a database in a real application)
 let posts = [];
@@ -15,7 +16,7 @@ app.post("/posts", (req, res) => {
   if (!title || !content) {
     return res.status(400).json({ error: "Title and content are required" });
   }
-  const newPost = { id: posts.length + 1, title, content };
+  const newPost = { id: uuid4(), title, content };
   posts.push(newPost);
   res.status(201).json(newPost);
 });
@@ -27,7 +28,7 @@ app.get("/posts", (req, res) => {
 
 // READ: Get a specific blog post by ID
 app.get("/posts/:id", (req, res) => {
-  const post = posts.find((p) => p.id === parseInt(req.params.id));
+  const post = posts.find((p) => p.id === req.params.id);
   if (!post) {
     return res.status(404).json({ error: "Post not found" });
   }
@@ -37,17 +38,23 @@ app.get("/posts/:id", (req, res) => {
 // UPDATE: Update a blog post
 app.put("/posts/:id", (req, res) => {
   const { title, content } = req.body;
-  const postIndex = posts.findIndex((p) => p.id === parseInt(req.params.id));
+  const postIndex = posts.findIndex((p) => p.id === req.params.id);
   if (postIndex === -1) {
     return res.status(404).json({ error: "Post not found" });
   }
-  posts[postIndex] = { ...posts[postIndex], title, content };
+  if (title && content) {
+    posts[postIndex] = { ...posts[postIndex], title, content };
+  } else if (title) {
+    posts[postIndex] = { ...posts[postIndex], title };
+  } else if (content) {
+    posts[postIndex] = { ...posts[postIndex], content };
+  }
   res.json(posts[postIndex]);
 });
 
 // DELETE: Delete a blog post
 app.delete("/posts/:id", (req, res) => {
-  const postIndex = posts.findIndex((p) => p.id === parseInt(req.params.id));
+  const postIndex = posts.findIndex((p) => p.id === req.params.id);
   if (postIndex === -1) {
     return res.status(404).json({ error: "Post not found" });
   }
