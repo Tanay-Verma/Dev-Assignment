@@ -4,16 +4,23 @@ import { User } from "./UserTable";
 // Mock API function
 const submitToAPI = async (userData: User) => {
   // Simulate API call
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  return { ...userData, id: Math.floor(Math.random() * 1000) };
+  const response = await fetch("http://localhost:3000/user", {
+    method: "POST",
+    body: JSON.stringify(userData),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+  const newUser = await response.json()
+  return { ...newUser, id: Math.floor(Math.random() * 1000) };
 };
 
 const UserForm = () => {
-  const [formData, setFormData] = useState<User>({name:"", email:""});
+  const [formData, setFormData] = useState<User>({ name: "", email: "" });
   const [isLoading, setIsLoading] = useState(false);
-//   const [error, setError] = useState("");
+  //   const [error, setError] = useState("");
 
-  const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -21,14 +28,14 @@ const UserForm = () => {
     }));
   };
 
-  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
       const result = await submitToAPI(formData);
-      console.log(result)
-      setFormData({ name: "", email: ""}); // Reset form
+      console.log(result);
+      setFormData({ name: "", email: "" }); // Reset form
     } catch (err) {
     } finally {
       setIsLoading(false);
@@ -37,7 +44,10 @@ const UserForm = () => {
 
   return (
     <div className="max-w-md mx-auto mt-10 h-screen flex justify-center items-center">
-      <form onSubmit={handleSubmit} className="space-y-4 bg-gray-900 p-10 rounded-lg">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-4 bg-gray-900 p-10 rounded-lg"
+      >
         <div>
           <label
             htmlFor="name"
