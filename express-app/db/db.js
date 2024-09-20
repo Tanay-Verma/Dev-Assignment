@@ -27,7 +27,7 @@ export const User = mongoose.model("User", userSchema);
 export async function connectToMongoDB() {
   // Connect to MongoDB
   try {
-    await mongoose.connect("mongodb://localhost/User", {
+    await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

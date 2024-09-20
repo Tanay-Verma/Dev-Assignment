@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "node --watch index.js",
-    "load_data": "node db/insert_into_db.js",
+    "start:local": "node --env-file=.env index.js",
+    "dev": "node --watch --env-file=.env index.js",
+    "load_data": "node --env-file=.env db/insert_into_db.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
