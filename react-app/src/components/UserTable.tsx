@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 interface User {
   name: string;
@@ -11,6 +11,9 @@ export const UserTable = () => {
   const [columns, setColumns] = useState<string[]>();
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage] = useState<number>(5);
+
   useEffect(() => {
     async function fetchUsers() {
       try {
@@ -28,6 +31,12 @@ export const UserTable = () => {
     fetchUsers();
   }, []);
 
+  // since this value will not change as the number of users will remain constant once the page has loaded so no need to recompute it
+  const totalPages = useMemo(
+    () => (users ? Math.ceil(users.length / itemsPerPage) : 0),
+    [users]
+  );
+
   if (loading) {
     return <>Loading...</>;
   }
@@ -36,9 +45,15 @@ export const UserTable = () => {
     return <>Error: {error}</>;
   }
 
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = users?.slice(indexOfFirstItem, indexOfLastItem);
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
   return (
     <>
-      <div className="overflow-x-auto h-screen flex justify-center items-center">
+      <div className="overflow-x-auto h-screen flex flex-col justify-center items-center">
         <table className="bg-gray-800 border border-gray-700">
           <thead>
             <tr className="bg-gray-900">
@@ -58,8 +73,8 @@ export const UserTable = () => {
             </tr>
           </thead>
           <tbody className="bg-gray-800 divide-y divide-gray-700">
-            {users &&
-              users.map((row, rowIndex) => (
+            {currentItems &&
+              currentItems.map((row, rowIndex) => (
                 <tr
                   key={rowIndex}
                   className={rowIndex % 2 === 0 ? "bg-white" : "bg-gray-900"}
@@ -82,6 +97,21 @@ export const UserTable = () => {
               ))}
           </tbody>
         </table>
+        <div className="flex justify-center mt-4">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
+            <button
+              key={number}
+              onClick={() => paginate(number)}
+              className={`mx-1 px-3 py-1 rounded ${
+                currentPage === number
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-700"
+              }`}
+            >
+              {number}
+            </button>
+          ))}
+        </div>
       </div>
     </>
   );
