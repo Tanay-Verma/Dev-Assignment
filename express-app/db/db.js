@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { validateEmail } from "../utils/helper.js";
 
 // Reuse the User model from the previous example
 const userSchema = new mongoose.Schema({
@@ -11,9 +12,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     validate: {
-      validator: function (v) {
-        return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
-      },
+      validator: validateEmail,
       message: (props) => `${props.value} is not a valid email address!`,
     },
   },
