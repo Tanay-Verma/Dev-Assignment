@@ -5,7 +5,7 @@ export const router = Router();
 
 router.get("/users", async (req, res) => {
   try {
-    const users = await User.find({});
+    const users = await User.find({}, { __v: 0, _id: 0 });
     res.json(users);
   } catch (error) {
     console.error(error);
@@ -18,7 +18,7 @@ router.get("/user/:email", async (req, res) => {
   let user = {};
   try {
     if (validateEmail(email)) {
-      user = await User.findOne({ email });
+      user = await User.findOne({ email }, { __v: 0, _id: 0 });
     }
   } catch (error) {
     console.error(error);
