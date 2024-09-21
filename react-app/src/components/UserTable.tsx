@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Alert } from "./Alert";
 
 export interface User {
   name: string;
@@ -38,11 +39,11 @@ export const UserTable = () => {
   );
 
   if (loading) {
-    return <>Loading...</>;
+    return <Alert variant="default" message="Loading..." />;
   }
 
   if (error) {
-    return <>Error: {error}</>;
+    return <Alert variant="destructive" message={error} />;
   }
 
   // Pagination logic
