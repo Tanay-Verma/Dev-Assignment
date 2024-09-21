@@ -34,7 +34,7 @@ To start the application in development mode, run:
 npm run dev
 ```
 
-This will start the server with nodemon, which will automatically restart the server when changes are made to the code.
+This will start the server with --watch flag, which will automatically restart the server when changes are made to the code.
 
 ## Dependencies
 
