@@ -1,50 +1,157 @@
-# React + TypeScript + Vite
+# React User Management Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a React-based user management system that includes a form to add user details, a paginated user table and a reusable alert component. It's designed to demonstrate best practices in React development, state management, and UI component design.
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Components](#components)
+  - [UserTable](#usertable)
+  - [Alert](#alert)
+- [API](#api)
+- [Styling](#styling)
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Paginated user table with dynamic data fetching
+- Reusable alert component for displaying notifications
+- Responsive design using Tailwind CSS
+- TypeScript for type safety
+- React Hooks for state management
 
-- Configure the top-level `parserOptions` property like this:
+## Project Structure
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```
+react-user-management/
+│
+├── src/
+│   ├── components/
+│   │   ├── UserTable.tsx
+│   │   ├── UserForm.tsx
+│   │   └── Alert.tsx
+│   ├── App.tsx
+│   └── index.tsx
+│
+├── public/
+│   └── index.html
+│
+├── package.json
+├── tsconfig.json
+├── tailwind.config.js
+└── README.md
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Installation
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+1. Clone the repository:
+   ```
+   git clone https://github.com/Tanay-Verma/Dev-Assignment.git
+   ```
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+2. Navigate to the project directory:
+   ```
+   cd react-app
+   ```
+
+3. Install dependencies:
+   ```
+   npm install
+   ```
+
+4. Start the development server:
+   ```
+   npm start
+   ```
+
+## Usage
+
+After starting the development server, open your browser and navigate to `http://localhost:3000`. You should see the user table and can interact with the pagination controls (make sure the API is setup and running).
+
+To use the Alert component, import it in your React files and use it as needed.
+
+## Components
+
+### UserTable
+
+The UserTable component displays a list of users with pagination.
+
+#### Usage
+
+```tsx
+import { UserTable } from './components/UserTable';
+
+function App() {
+  return (
+    <div className="App">
+      <h1>User Management</h1>
+      <UserTable />
+    </div>
+  );
+}
 ```
+
+### UserForm
+
+The UserForm component is used to add new users to the table.
+
+#### Usage
+
+```tsx
+import { UserForm } from './components/UserForm';
+
+function App() {
+  return (
+    <div className="App">
+      <h1>User Management</h1>
+      <UserForm />
+    </div>
+  );
+}
+```
+
+### Alert
+
+The Alert component is used to display notifications or alerts.
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| variant | 'default' \| 'success' \| 'warning' \| 'destructive' | 'default' | Determines the color scheme of the alert |
+| message | string | - | Message to display |
+| duration | number | 3000 | Duration in milliseconds (optional) |
+
+#### Usage
+
+```tsx
+import Alert from './components/Alert';
+
+function App() {
+  return (
+    <div className="App">
+      <Alert 
+        variant="success"
+        message="New user has been successfully added to the database."
+        duration={3000} // 3 seconds default
+      />
+    </div>
+  );
+}
+```
+
+## API
+
+The project assumes a backend API endpoint at `http://localhost:3000/users` that returns a list of users. Each user object should have the following structure:
+
+```typescript
+interface User {
+  name: string;
+  age?: number;
+  email: string;
+}
+```
+
+Ensure your backend API is set up to return data in this format.
